@@ -20,5 +20,6 @@ Automated Code Review Completed
         "-H", f"Authorization: token {token}",
         "-H", "Accept: application/vnd.github+json",
         f"https://api.github.com/repos/{repo}/issues/{pr_number}/comments",
-        "-d", json.dumps({"body": comment})
-    ])
+        "-d",
+        json.dumps({"body": comment})
+    ], check=True)
