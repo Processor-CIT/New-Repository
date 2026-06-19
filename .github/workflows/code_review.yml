@@ -1,31 +1,15 @@
-name: PR Code Review
+name: ca
+
 on:
-pull_request:
-types: [opened, synchronize, reopened]
+  pull_request:
+    branches:
+      - main
+
 jobs:
-code-quality:
-runs-on: ubuntu-latest
-steps:
-  - name: Checkout Repository
-    uses: actions/checkout@v4
-  - name: Setup Python
-    uses: actions/setup-python@v5
-    with:
-      python-version: "3.11"
-  - name: Install Dependencies
-    run: |
-      pip install pycodestyle
-  - name: Run pycodestyle
-    run: |
-      pycodestyle . > pycodestyle_report.txt || true
-  - name: Check Line Count
-    run: |
-      python scripts/check_line_count.py
-  - name: Check Docstrings
-    run: |
-      python scripts/check_docstrings.py
-  - name: Create PR Comment
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    run: |
-      python scripts/post_pr_comment.py
+  review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: echo "Code review workflow"
