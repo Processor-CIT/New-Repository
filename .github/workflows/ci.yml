@@ -1,9 +1,26 @@
-name: Team CI
+name: PR Code Review
 on:
-  pull_request:
+pull_request:
+push:
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: echo "CI Successful"
+code-quality:
+runs-on: ubuntu-latest
+steps:
+  - uses: actions/checkout@v4
+  - name: Setup Python
+    uses: actions/setup-python@v5
+    with:
+      python-version: "3.11"
+  - name: Install pycodestyle
+    run: |
+      pip install pycodestyle
+  - name: Run pycodestyle
+    run: |
+      pycodestyle . || true
+  - name: Check Line Count
+    run: |
+      python scripts/check_line_count.py
+  - name: Check Docstrings
+    run: |
+      python scripts/check_docstrings.py
+
